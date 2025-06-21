@@ -1,0 +1,11 @@
+Date: 21/6/2025 Time: 12:30:56 pm | Method: GET | Route: /users/ | Status: 200 | IP: ::ffff:127.0.0.1 | Duration: 6.94ms
+Date: 21/6/2025 Time: 12:32:10 pm | Method: POST | Route: /users/ | Status: 201 | IP: ::ffff:127.0.0.1 | Duration: 23.91ms
+Date: 21/6/2025 Time: 12:35:56 pm | Method: GET | Route: /users/1 | Status: 404 | IP: ::ffff:127.0.0.1 | Duration: 4.64ms
+Date: 21/6/2025 Time: 12:37:41 pm | Method: GET | Route: /users/ | Status: 200 | IP: ::ffff:127.0.0.1 | Duration: 4.81ms
+Date: 21/6/2025 Time: 12:43:31 pm | Method: GET | Route: /users/ | Status: 200 | IP: ::ffff:127.0.0.1 | Duration: 4.72ms
+Date: 21/6/2025 Time: 12:43:36 pm | Method: POST | Route: /users/ | Status: 201 | IP: ::ffff:127.0.0.1 | Duration: 10.97ms
+Date: 21/6/2025 Time: 12:44:01 pm | Method: POST | Route: /users/ | Status: 201 | IP: ::ffff:127.0.0.1 | Duration: 1.65ms
+Date: 21/6/2025 Time: 12:52:38 pm | Method: POST | Route: /users/ | Status: 400 | IP: ::ffff:127.0.0.1 | Duration: 15.10ms
+Date: 21/6/2025 Time: 12:52:45 pm | Method: POST | Route: /users/ | Status: 201 | IP: ::ffff:127.0.0.1 | Duration: 2.21ms
+Date: 21/6/2025 Time: 12:52:54 pm | Method: GET | Route: /users/1 | Status: 200 | IP: ::ffff:127.0.0.1 | Duration: 1.47ms
+Date: 21/6/2025 Time: 12:53:39 pm | Method: GET | Route: /users/144 | Status: 404 | IP: ::ffff:127.0.0.1 | Duration: 4.71ms
