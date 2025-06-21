@@ -28,7 +28,7 @@ jobs:
       - name: "Install pnpm"
         run: npm i -g pnpm@latest
       - name: "Install dependencies"
-        run: pnpm Install
+        run: pnpm install
       - name: "Start the server"
         run: pnpm run start || pnpm run dev
 
