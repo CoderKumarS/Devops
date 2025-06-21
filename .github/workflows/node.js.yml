@@ -28,8 +28,8 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: latest
-        env:
-          PNPM_HOME: ~/.pnpm
+
+      # No need to set PNPM_HOME manually — the action takes care of path
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
