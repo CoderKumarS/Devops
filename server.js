@@ -5,7 +5,7 @@ const userRoutes = require('./routes/user');
 const fs = require('fs');
 const path = require('path');
 // middleware that is specific to this router
-const logFilePath = path.join(__dirname, 'logs.txt');
+const logFilePath = path.join(__dirname, 'logs.log');
 
 const timeLog = (req, res, next) => {
   const start = process.hrtime();
