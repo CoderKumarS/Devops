@@ -12,5 +12,11 @@ router.get('/about', (req, res) => {
 router.get('/contact', (req, res) => {
     res.send('Contact page')
 })
+router.get('/gallery', (req, res) => {
+    res.send('Gallery page')
+})
+router.get('/login', (req, res) => {
+    res.send('Login page')
+})
 
 module.exports = router

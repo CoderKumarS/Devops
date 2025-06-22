@@ -14,13 +14,13 @@
   "packageManager": "pnpm@10.9.0",
   "dependencies": {
     "body-parser": "^2.2.0",
-    "debug": "^4.4.1",
     "express": "^5.1.0",
-    "mongodb": "^6.17.0",
-    "nodemon": "^3.1.10"
+    "mongodb": "^6.17.0"
   },
   "devDependencies": {
+    "debug": "^4.4.1",
     "jest": "^30.0.2",
+    "nodemon": "^3.1.10",
     "supertest": "^7.1.1"
   }
 }

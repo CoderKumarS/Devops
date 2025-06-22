@@ -11,22 +11,22 @@ importers:
       body-parser:
         specifier: ^2.2.0
         version: 2.2.0
-      debug:
-        specifier: ^4.4.1
-        version: 4.4.1(supports-color@5.5.0)
       express:
         specifier: ^5.1.0
         version: 5.1.0
       mongodb:
         specifier: ^6.17.0
         version: 6.17.0
-      nodemon:
-        specifier: ^3.1.10
-        version: 3.1.10
     devDependencies:
+      debug:
+        specifier: ^4.4.1
+        version: 4.4.1(supports-color@5.5.0)
       jest:
         specifier: ^30.0.2
         version: 30.0.2(@types/node@24.0.3)
+      nodemon:
+        specifier: ^3.1.10
+        version: 3.1.10
       supertest:
         specifier: ^7.1.1
         version: 7.1.1

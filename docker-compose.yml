@@ -1,13 +1,12 @@
 services:
   web:
     build: .
-    command: npm start
-    develop:
-      watch:
-        - action: sync
-          path: ./web
-          target: /src/web
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: package.json
+    container_name: backend-web
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: pnpm run dev
+    environment:
+      NODE_ENV: development

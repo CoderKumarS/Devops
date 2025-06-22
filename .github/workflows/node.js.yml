@@ -29,7 +29,8 @@ jobs:
         with:
           version: latest
 
-      # No need to set PNPM_HOME manually — the action takes care of path
+      - name: Enable corepack (ensure pnpm is available)
+        run: corepack enable
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
