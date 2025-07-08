@@ -1,10 +1,29 @@
 const request = require('supertest');
 const express = require('express');
+const mongoose = require('mongoose');
 const userRoutes = require('../routes/user');
+const { User } = require('../models/user'); // Adjust path if needed
 
 const app = express();
 app.use(express.json());
 app.use('/users', userRoutes);
+
+beforeAll(async () => {
+    // Connect to a test database
+    await mongoose.connect('mongodb://localhost:27017/backend_test', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+});
+
+afterAll(async () => {
+    await mongoose.connection.close();
+});
+
+beforeEach(async () => {
+    // Clear users collection before each test
+    await User.deleteMany({});
+});
 
 describe('GET /users', () => {
     it('should return message when list is empty', async () => {
@@ -17,18 +36,17 @@ describe('GET /users', () => {
 
     it('should return list of users', async () => {
         // Create a user first
-        await request(app)
-            .post('/users')
-            .send({ name: "Kumar", email: "email@email.com" });
+        const user = await User.create({ name: "Kumar", email: "email@email.com" });
         const res = await request(app).get('/users');
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual({
             message: "List of users",
             users: [
                 {
-                    id: 1,
+                    _id: user._id.toString(),
                     name: "Kumar",
-                    email: "email@email.com"
+                    email: "email@email.com",
+                    __v: 0
                 }
             ]
         });
@@ -41,14 +59,14 @@ describe('POST /users', () => {
             .post('/users')
             .send({ name: "Kumar2", email: "email@email.com" });
         expect(res.statusCode).toBe(201);
-        expect(res.body).toEqual({
+        expect(res.body).toMatchObject({
             message: "User created",
             user: {
-                id: 2,
                 name: "Kumar2",
                 email: "email@email.com"
             }
         });
+        expect(res.body.user).toHaveProperty('_id');
     });
 
     it('should return 400 for invalid input', async () => {
@@ -64,23 +82,23 @@ describe('POST /users', () => {
 
 describe('GET /users/:id', () => {
     it('should return user by ID', async () => {
-        await request(app)
-            .post('/users')
-            .send({ name: "Kumar", email: "email@email.com" });
-        const res = await request(app).get('/users/1');
+        const user = await User.create({ name: "Kumar", email: "email@email.com" });
+        const res = await request(app).get(`/users/${user._id}`);
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual({
-            message: "User with ID: 1",
+            message: `User with ID: ${user._id}`,
             user: {
-                id: 1,
+                _id: user._id.toString(),
                 name: "Kumar",
-                email: "email@email.com"
+                email: "email@email.com",
+                __v: 0
             }
         });
     });
 
     it('should return 404 for non-existent user', async () => {
-        const res = await request(app).get('/users/999');
+        const fakeId = new mongoose.Types.ObjectId();
+        const res = await request(app).get(`/users/${fakeId}`);
         expect(res.statusCode).toBe(404);
         expect(res.body).toEqual({ error: "User not found" });
     });
@@ -88,17 +106,15 @@ describe('GET /users/:id', () => {
 
 describe('PUT /users/:id', () => {
     it('should update user by ID', async () => {
-        await request(app)
-            .post('/users')
-            .send({ name: "Kumar", email: "email@email.com" });
+        const user = await User.create({ name: "Kumar", email: "email@email.com" });
         const res = await request(app)
-            .put('/users/1')
+            .put(`/users/${user._id}`)
             .send({ name: "Updated Kumar", email: "email@email.com" });
         expect(res.statusCode).toBe(200);
-        expect(res.body).toEqual({
-            message: "User with ID: 1 updated",
+        expect(res.body).toMatchObject({
+            message: `User updated`,
             user: {
-                id: 1,
+                _id: user._id.toString(),
                 name: "Updated Kumar",
                 email: "email@email.com"
             }
@@ -106,19 +122,18 @@ describe('PUT /users/:id', () => {
     });
 
     it('should return 404 for non-existent user', async () => {
+        const fakeId = new mongoose.Types.ObjectId();
         const res = await request(app)
-            .put('/users/999')
+            .put(`/users/${fakeId}`)
             .send({ name: "Non-existent User", email: "email@email.com" });
         expect(res.statusCode).toBe(404);
         expect(res.body).toEqual({ error: "User not found" });
     });
 
     it('should return 400 for invalid input', async () => {
-        await request(app)
-            .post('/users')
-            .send({ name: "Kumar", email: "email@email.com" });
+        const user = await User.create({ name: "Kumar", email: "email@email.com" });
         const res = await request(app)
-            .put('/users/1')
+            .put(`/users/${user._id}`)
             .send({ name: "", email: "invalid-email" });
         expect(res.statusCode).toBe(400);
         expect(res.body).toEqual({
@@ -129,18 +144,17 @@ describe('PUT /users/:id', () => {
 
 describe('DELETE /users/:id', () => {
     it('should delete user by ID', async () => {
-        await request(app)
-            .post('/users')
-            .send({ name: "Kumar", email: "email@email.com" });
-        const res = await request(app).delete('/users/1');
+        const user = await User.create({ name: "Kumar", email: "email@email.com" });
+        const res = await request(app).delete(`/users/${user._id}`);
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual({
-            message: "User with ID: 1 deleted"
+            message: `User with ID: ${user._id} deleted`
         });
     });
 
     it('should return 404 for non-existent user', async () => {
-        const res = await request(app).delete('/users/999');
+        const fakeId = new mongoose.Types.ObjectId();
+        const res = await request(app).delete(`/users/${fakeId}`);
         expect(res.statusCode).toBe(404);
         expect(res.body).toEqual({ error: "User not found" });
     });
